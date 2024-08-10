@@ -1,0 +1,148 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define TAMANHO_STRING 100
+#define TAMANHO_TELEFONE 20
+#define MAX_INCIDENTES 100
+
+typedef struct {
+    int id_empresa;
+    char nome_empresa[TAMANHO_STRING];
+    char cnpj_empresa[TAMANHO_STRING];
+    char tipo_empresa[TAMANHO_STRING];
+    char equipamentos_empresa[TAMANHO_STRING];
+    char epicos_empresa[TAMANHO_STRING];
+} DadosEmpresa;
+
+typedef struct {
+    int id_trabalhador;
+    char matricula_trabalhador[TAMANHO_STRING];
+    char nome_trabalhador[TAMANHO_STRING];
+    char endereco_trabalhador[TAMANHO_STRING];
+    char telefone_trabalhador[TAMANHO_TELEFONE];
+    char telefone_emergencial_trabalhador[TAMANHO_TELEFONE];
+    char formacao_trabalhador[TAMANHO_STRING];
+    char cargo_trabalhador[TAMANHO_STRING];
+    char ala_trabalhador[TAMANHO_STRING];
+    char cpf_trabalhador[TAMANHO_STRING];
+    int horas_trabalho;
+} DadosTrabalhador;
+
+typedef struct {
+    int id_tecnico;
+    char matricula_tecnico[TAMANHO_STRING];
+    char nome_tecnico[TAMANHO_STRING];
+    char endereco_tecnico[TAMANHO_STRING];
+    char telefone_tecnico[TAMANHO_TELEFONE];
+    char telefone_emergencial_tecnico[TAMANHO_TELEFONE];
+    char formacao_tecnico[TAMANHO_STRING];
+    int anos_experiencia;
+    char ala_responsabilidade_tecnico[TAMANHO_STRING];
+} DadosTecnico;
+
+typedef struct {
+    int id_incidente;
+    char descricao_incidente[TAMANHO_STRING];
+    char data_incidente[TAMANHO_STRING];
+    int id_trabalhador;
+} DadosIncidente;
+
+void inserir_empresa(DadosEmpresa empresas[], int *contagem_empresas, char nome[], char cnpj[], char tipo[], char equipamentos[], char epicos[]) {
+    DadosEmpresa nova_empresa;
+    nova_empresa.id_empresa = *contagem_empresas + 1;
+    strncpy(nova_empresa.nome_empresa, nome, TAMANHO_STRING);
+    strncpy(nova_empresa.cnpj_empresa, cnpj, TAMANHO_STRING);
+    strncpy(nova_empresa.tipo_empresa, tipo, TAMANHO_STRING);
+    strncpy(nova_empresa.equipamentos_empresa, equipamentos, TAMANHO_STRING);
+    strncpy(nova_empresa.epicos_empresa, epicos, TAMANHO_STRING);
+
+    empresas[*contagem_empresas] = nova_empresa;
+    (*contagem_empresas)++;
+}
+
+void inserir_trabalhador(DadosTrabalhador trabalhadores[], int *contagem_trabalhadores, char matricula[], char nome[], char endereco[], char telefone[], char telefone_emergencial[], char formacao[], char cargo[], char ala[], char cpf[], int horas_trabalho) {
+    DadosTrabalhador novo_trabalhador;
+    novo_trabalhador.id_trabalhador = *contagem_trabalhadores + 1;
+    strncpy(novo_trabalhador.matricula_trabalhador, matricula, TAMANHO_STRING);
+    strncpy(novo_trabalhador.nome_trabalhador, nome, TAMANHO_STRING);
+    strncpy(novo_trabalhador.endereco_trabalhador, endereco, TAMANHO_STRING);
+    strncpy(novo_trabalhador.telefone_trabalhador, telefone, TAMANHO_TELEFONE);
+    strncpy(novo_trabalhador.telefone_emergencial_trabalhador, telefone_emergencial, TAMANHO_TELEFONE);
+    strncpy(novo_trabalhador.formacao_trabalhador, formacao, TAMANHO_STRING);
+    strncpy(novo_trabalhador.cargo_trabalhador, cargo, TAMANHO_STRING);
+    strncpy(novo_trabalhador.ala_trabalhador, ala, TAMANHO_STRING);
+    strncpy(novo_trabalhador.cpf_trabalhador, cpf, TAMANHO_STRING);
+    novo_trabalhador.horas_trabalho = horas_trabalho;
+
+    trabalhadores[*contagem_trabalhadores] = novo_trabalhador;
+    (*contagem_trabalhadores)++;
+}
+
+void inserir_tecnico(DadosTecnico tecnicos[], int *contagem_tecnicos, char matricula[], char nome[], char endereco[], char telefone[], char telefone_emergencial[], char formacao[], int anos_experiencia, char ala_responsabilidade[]) {
+    DadosTecnico novo_tecnico;
+    novo_tecnico.id_tecnico = *contagem_tecnicos + 1;
+    strncpy(novo_tecnico.matricula_tecnico, matricula, TAMANHO_STRING);
+    strncpy(novo_tecnico.nome_tecnico, nome, TAMANHO_STRING);
+    strncpy(novo_tecnico.endereco_tecnico, endereco, TAMANHO_STRING);
+    strncpy(novo_tecnico.telefone_tecnico, telefone, TAMANHO_TELEFONE);
+    strncpy(novo_tecnico.telefone_emergencial_tecnico, telefone_emergencial, TAMANHO_TELEFONE);
+    strncpy(novo_tecnico.formacao_tecnico, formacao, TAMANHO_STRING);
+    novo_tecnico.anos_experiencia = anos_experiencia;
+    strncpy(novo_tecnico.ala_responsabilidade_tecnico, ala_responsabilidade, TAMANHO_STRING);
+
+    tecnicos[*contagem_tecnicos] = novo_tecnico;
+    (*contagem_tecnicos)++;
+}
+
+void inserir_incidente(DadosIncidente incidentes[], int *contagem_incidentes, char descricao[], char data[], int id_trabalhador) {
+    DadosIncidente novo_incidente;
+    novo_incidente.id_incidente = *contagem_incidentes + 1;
+    strncpy(novo_incidente.descricao_incidente, descricao, TAMANHO_STRING);
+    strncpy(novo_incidente.data_incidente, data, TAMANHO_STRING);
+    novo_incidente.id_trabalhador = id_trabalhador;
+
+    incidentes[*contagem_incidentes] = novo_incidente;
+    (*contagem_incidentes)++;
+}
+
+void listar_empresas(DadosEmpresa empresas[], int contagem_empresas) {
+    printf("Lista de Empresas:\n");
+    for (int i = 0; i < contagem_empresas; i++) {
+        printf("ID: %d, Nome: %s, CNPJ: %s, Tipo: %s\n", empresas[i].id_empresa, empresas[i].nome_empresa, empresas[i].cnpj_empresa, empresas[i].tipo_empresa);
+    }
+}
+
+void listar_trabalhadores(DadosTrabalhador trabalhadores[], int contagem_trabalhadores) {
+    printf("Lista de Trabalhadores:\n");
+    for (int i = 0; i < contagem_trabalhadores; i++) {
+        printf("ID: %d, Nome: %s, Matrícula: %s, CPF: %s\n", trabalhadores[i].id_trabalhador, trabalhadores[i].nome_trabalhador, trabalhadores[i].matricula_trabalhador, trabalhadores[i].cpf_trabalhador);
+    }
+}
+
+void listar_tecnicos(DadosTecnico tecnicos[], int contagem_tecnicos) {
+    printf("Lista de Técnicos:\n");
+    for (int i = 0; i < contagem_tecnicos; i++) {
+        printf("ID: %d, Nome: %s, Matrícula: %s, Ala de Responsabilidade: %s\n", tecnicos[i].id_tecnico, tecnicos[i].nome_tecnico, tecnicos[i].matricula_tecnico, tecnicos[i].ala_responsabilidade_tecnico);
+    }
+}
+
+void listar_incidentes(DadosIncidente incidentes[], int contagem_incidentes) {
+    printf("Lista de Incidentes:\n");
+    for (int i = 0; i < contagem_incidentes; i++) {
+        printf("ID: %d, Descrição: %s, Data: %s, ID do Trabalhador: %d\n", incidentes[i].id_incidente, incidentes[i].descricao_incidente, incidentes[i].data_incidente, incidentes[i].id_trabalhador);
+    }
+}
+
+void mostrar_dados_trabalhador(DadosTrabalhador trabalhadores[], int contagem_trabalhadores, int id_trabalhador) {
+    for (int i = 0; i < contagem_trabalhadores; i++) {
+        if (trabalhadores[i].id_trabalhador == id_trabalhador) {
+            printf("Dados do Trabalhador:\n");
+            printf("Matrícula: %s\n", trabalhadores[i].matricula_trabalhador);
+            printf("Nome: %s\n", trabalhadores[i].nome_trabalhador);
+            printf("Endereço: %s\n", trabalhadores[i].endereco_trabalhador);
+            printf("Telefone: %s\n", trabalhadores[i].telefone_trabalhador);
+            printf("Telefone Emergencial: %s\n", trabalhadores[i].telefone_emergencial_trabalhador);
+            printf("Formação: %s\n", trabalhadores[i].formacao_trabalhador);
+            printf("Cargo: %s\n", trabalhadores[i].cargo_trabalhador);
+            printf("Ala: %s\n
